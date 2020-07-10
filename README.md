@@ -5,12 +5,8 @@
 
 Generic Datatable with following features
 
-# Pagination
-# Selection
-# Search
+For more information about using Node.js on Heroku, see these Dev Center articles:
 
-## Part 2: Working with Source
-
-
-## Part 3: Deploying to Production
-
+- [Pagination]
+- [Selection]
+- [Search]
