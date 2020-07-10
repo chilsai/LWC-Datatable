@@ -1,0 +1,25 @@
+<template>
+    <template if:true={showTable}>
+        <lightning-card  title="Data Table">
+            <c-lwc-datatable-utility records={allRecords} 
+            total-records={allRecords.length} 
+            columns = {columns}
+            key-field="Id"
+            show-search-box="true"            
+            max-row-selection={allRecords.length}
+            onpaginatorchange={handlePaginatorChange}
+            onsetselectedrecords={handleAllSelectedRows}>
+            </c-lwc-datatable-utility>     
+        </lightning-card>
+    </template>
+  
+    <lightning-card  title="In Parent Componant">
+        <template for:each={selectedRows} for:item="rec">
+            <li key={rec.Id}>
+                {rec.Id}
+            </li>        
+        </template>
+    </lightning-card>
+
+        
+</template>
