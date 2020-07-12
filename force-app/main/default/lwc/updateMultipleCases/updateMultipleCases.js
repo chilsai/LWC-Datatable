@@ -10,14 +10,14 @@ const columns = [
     { label: 'Close Date', fieldName: 'ClosedDate', type: 'date', sortable:true,typeAttributes:{timeZone:'UTC', year:'numeric', month:'numeric', day:'numeric'}},
 ];
 export default class UpdateMultipleCases extends LightningElement {
-    @track error;
-    @track columns = columns;
-    @track allRecords; //All opportunities available for data table    
-    @track showTable = false; //Used to render table after we get the data from apex controller    
-    @track recordsToDisplay = []; //Records to be displayed on the page
-    @track rowNumberOffset; //Row number
-    @track preSelected = [];
-    @track selectedRows = [];
+    error;
+    columns = columns;
+    allRecords; //All opportunities available for data table    
+    showTable = false; //Used to render table after we get the data from apex controller    
+    recordsToDisplay = []; //Records to be displayed on the page
+    rowNumberOffset; //Row number
+    preSelected = [];
+    selectedRows;
     
     @wire(getCases)
     wopps({error,data}){
@@ -67,18 +67,18 @@ export default class UpdateMultipleCases extends LightningElement {
  
     handleAllSelectedRows(event) {
         this.selectedRows = [];
-        const selectedRows = event.detail;  
+        const selectedItems = event.detail;          
         let items = [];
-        selectedRows.forEach((item) => {
+        selectedItems.forEach((item) => {
             this.showActionButton = true;
             console.log(item);
             items.push(item);
-            if(item.selected){
-                this.selectedRows.push(item);
-            }
         });
-        //this.selectedRows = selectedRows;
-        console.log(selectedRows);
+        this.selectedRows = items;  
+        console.log(this.selectedRows);        
     } 
+
+
+
 
 } 
