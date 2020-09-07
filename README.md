@@ -16,7 +16,7 @@ OOB _lighting-datatable_ component displays tabular data where each column can b
 
 In this article we will focus on creating _generic data table component_ with key features like \(_Pagination, Row selection, Static Headers and Global Search_ \).  Source code for this article is in [lwcDatatable](https://github.com/chilsai/lwcDatatable) repo. 
 
-#### Create Generic Component
+### Create Generic Component
 
 First we will create _generic data table component_ and we call the Component as _**lwcDatatableUtility.**_
 
@@ -25,7 +25,7 @@ First we will create _generic data table component_ and we call the Component as
 3. Deploy the _**lwcDatatableUtility** c_omponent to your Org. 
 4. Now we have generic Data table component ready to use and we can plug this to your own components.
 
-#### Plug-In Generic Component\(_**lwcDataTableUtility**_ \) to your Component
+### Plug-In Generic Component\(_**lwcDataTableUtility**_ \) to your Component
 
 To use generic _**lwcDataTableUtility**_ component in your own component. 
 
