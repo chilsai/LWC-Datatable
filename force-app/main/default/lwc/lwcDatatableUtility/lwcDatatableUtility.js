@@ -2,8 +2,9 @@ import { LightningElement, api } from 'lwc';
 const DELAY = 300;
 const recordsPerPage = [10,25,50,75,100];
 const pageNumber = 1;
-const showIt = 'visibility:visible';
-const hideIt = 'visibility:hidden'; //visibility keeps the component space, but 
+const SHOWDIV = 'visibility:visible';
+const HIDEDIV = 'visibility:hidden';  
+const DEFAULTHEIGHT = '300';
 
 export default class LwcDatatableUtility extends LightningElement {
     // Input Attributes from Parent Componant
@@ -15,14 +16,22 @@ export default class LwcDatatableUtility extends LightningElement {
     @api records; //All records available in the data table; valid type is Array
     @api maxRowSelection; //All records available in the data table; valid type is Array 
     @api columns = []; //Records to be displayed on the page
+    
+    tableHeightStyle = 'height: '+ DEFAULTHEIGHT +'px;';    // Set Default Height as 300px 
+    @api
+    get tableHeight() {
+        return this.tableHeightStyle;
+    }
+
+    set tableHeight(value) {
+       this.tableHeightStyle = 'height: '+ value +'px;'; 
+    }    
 
     pageSize; //No.of records to be displayed per page
     totalPages; //Total no.of pages
     pageNumber = pageNumber; //Page number
     searchKey; //Search Input
-    controlPagination = showIt;
-    controlPrevious = hideIt; //Controls the visibility of Previous page button
-    controlNext = showIt; //Controls the visibility of Next page button
+    paginationVisibility = SHOWDIV; 
     rowNumberOffset; //Row number
     preSelected; //preSelectedOnDisplay
     recordsToDisplay = []; //Records to be displayed on the page
@@ -30,7 +39,7 @@ export default class LwcDatatableUtility extends LightningElement {
     filteredRecords = []; //Filtered records available in the data table; valid type is Array
     selectedRecords = []; //OverallSelected records  in the data table; valid type is Array 
     pageSelectedRecords = []; //Page Selected rows  in the data table; valid type is Array
-    filtredNum; //Total no.of Filtered records; valid type is Integer
+    filtredNum; // Total no.of Filtered records; valid type is Integer
     totalSelected = 0;
     refreshCurrentData;
     //SORT
@@ -46,34 +55,35 @@ export default class LwcDatatableUtility extends LightningElement {
             this.pageSize = this.totalRecords;
             this.showPagination = false;
         }
-        this.controlPagination = this.showPagination === false ? hideIt : showIt;
+        this.paginationVisibility = this.showPagination === false ? HIDEDIV : SHOWDIV;
         this.filteredRecords = this.records; 
         this.filtredNum = this.totalRecords;
-        this.setRecordsToDisplay();
+        this.setRecordsOnPage();
     }
 
     handleRecordsPerPage(event){
         this.pageSize = event.target.value;
-        this.setRecordsToDisplay();
+        this.setRecordsOnPage();
     }
 
     handlePageNumberChange(event){
         if(event.keyCode === 13){
             this.pageNumber = event.target.value;
-            this.setRecordsToDisplay();
+            this.setRecordsOnPage();
         }
     }
    
     previousPage(){
         this.pageNumber = this.pageNumber-1;
-        this.setRecordsToDisplay();
+        this.setRecordsOnPage();
     }
     nextPage(){
         this.pageNumber = this.pageNumber+1;
-        this.setRecordsToDisplay();
+        this.setRecordsOnPage();
     }
 
-    setRecordsToDisplay(){
+    @api
+    setRecordsOnPage(){
         this.recordsToDisplay = [];
         if(!this.pageSize)
             this.pageSize = this.filtredNum;
@@ -81,11 +91,11 @@ export default class LwcDatatableUtility extends LightningElement {
         this.totalPages = Math.ceil(this.filtredNum/this.pageSize);
 
         this.setPaginationControls();
-
         for(let i=(this.pageNumber-1)*this.pageSize; i < this.pageNumber*this.pageSize; i++){
             if(i === this.filtredNum) break;
             this.recordsToDisplay.push(this.filteredRecords[i]);
         }
+
         this.preSelected = [];
         this.selectedRecords.forEach((item) => {
             if(item.selected)
@@ -103,26 +113,26 @@ export default class LwcDatatableUtility extends LightningElement {
     }
 
     setPaginationControls(){
-        //Control Pre/Next buttons visibility by Total pages
+        // Previous/Next buttons visibility by Total pages
         if(this.totalPages === 1){
-            this.controlPrevious = hideIt;
-            this.controlNext = hideIt;
+            this.showPrevious = HIDEDIV;
+            this.showNext = HIDEDIV;
         }else if(this.totalPages > 1){
-           this.controlPrevious = showIt;
-           this.controlNext = showIt;
+           this.showPrevious = SHOWDIV;
+           this.showNext = SHOWDIV;
         }
-        //Control Pre/Next buttons visibility by Page number
+        // Previous/Next buttons visibility by Page number
         if(this.pageNumber <= 1){
             this.pageNumber = 1;
-            this.controlPrevious = hideIt;
+            this.showPrevious = HIDEDIV;
         }else if(this.pageNumber >= this.totalPages){
             this.pageNumber = this.totalPages;
-            this.controlNext = hideIt;
+            this.showNext = HIDEDIV;
         }
-        //Control Pre/Next buttons visibility by Pagination visibility
-        if(this.controlPagination === hideIt){
-            this.controlPrevious = hideIt;
-            this.controlNext = hideIt;
+        // Previous/Next buttons visibility by Pagination visibility
+        if(this.paginationVisibility === HIDEDIV){
+            this.showPrevious = HIDEDIV;
+            this.showNext = HIDEDIV;
         }
     }
 
@@ -131,22 +141,22 @@ export default class LwcDatatableUtility extends LightningElement {
         const searchKey = event.target.value;
         if(searchKey){
             this.delayTimeout = setTimeout(() => {
-                //this.controlPagination = hideIt;
+                //this.paginationVisibility = HIDEDIV;
                 this.setPaginationControls();
 
                 this.searchKey = searchKey;
                 //Use other field name here in place of 'Name' field if you want to search by other field
                 //this.recordsToDisplay = this.records.filter(rec => rec.includes(searchKey));
                 //Search with any column value (Updated as per the feedback)
-                this.filteredRecords = this.records.filter(rec => JSON.stringify(rec).includes(searchKey));
+                this.filteredRecords = this.records.filter(rec => JSON.stringify(rec).toLowerCase().includes(searchKey.toLowerCase()));
                 this.filtredNum = this.filteredRecords.length; 
-                this.setRecordsToDisplay();
+                this.setRecordsOnPage();
             }, DELAY);
         }else{
             this.filteredRecords = this.records; 
             this.filtredNum = this.totalRecords;            
-            this.controlPagination = showIt;
-            this.setRecordsToDisplay();
+            this.paginationVisibility = SHOWDIV;
+            this.setRecordsOnPage();
         }        
     }
 
@@ -201,7 +211,6 @@ export default class LwcDatatableUtility extends LightningElement {
         let selectedRecordIds = [];
         // Display that fieldName of the selected rows
         for (let i = 0; i < selectedRows.length; i++){
-            console.log(selectedRows[i].Id);
             selectedRecordIds.push(selectedRows[i].Id);
         }     
         this.handelRowsSelected(selectedRecordIds);        
@@ -214,7 +223,7 @@ export default class LwcDatatableUtility extends LightningElement {
         this.filteredRecords = cloneData;  
         this.sortDirection = sortDirection;
         this.sortedBy = sortedBy;        
-        this.setRecordsToDisplay();
+        this.setRecordsOnPage();
     } 
 
     sortBy(field, reverse, primer) {

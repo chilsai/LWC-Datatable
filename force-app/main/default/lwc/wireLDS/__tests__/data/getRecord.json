@@ -1,0 +1,51 @@
+{
+    "apiName" : "Account",
+    "childRelationships" : { },
+    "eTag" : "35f2effe0a85913b45011ae4e7dae39f",
+    "fields" : {
+      "Industry" : {
+        "displayValue" : "Banking",
+        "value" : "Banking"
+      },
+      "Name" : {
+        "displayValue" : null,
+        "value" : "Company ABC"
+      },
+      "Owner" : {
+        "displayValue" : "Test User",
+        "value" : {
+          "apiName" : "User",
+          "childRelationships" : { },
+          "eTag" : "f1a72efecde2ece9844980f21b4a0c25",
+          "fields" : {
+            "Id" : {
+              "displayValue" : null,
+              "value" : "005o0000000KEEUAA4"
+            },
+            "Name" : {
+              "displayValue" : null,
+              "value" : "Test User"
+            }
+          },
+          "id" : "005o0000000KEEUAA4",
+          "lastModifiedById" : "005o0000000KEEUAA4",
+          "lastModifiedDate" : "2019-08-22T23:45:53.000Z",
+          "recordTypeInfo" : null,
+          "systemModstamp" : "2019-08-23T06:00:11.000Z"
+        }
+      },
+      "OwnerId" : {
+        "displayValue" : null,
+        "value" : "005o0000000KEEUAA4"
+      },
+      "Phone" : {
+        "displayValue" : null,
+        "value" : "867-5309"
+      }
+    },
+    "id" : "0011J00001A3VFoQAN",
+    "lastModifiedById" : "005o0000000KEEUAA4",
+    "lastModifiedDate" : "2020-02-28T05:46:17.000Z",
+    "recordTypeInfo" : null,
+    "systemModstamp" : "2020-02-28T05:46:17.000Z"
+  }

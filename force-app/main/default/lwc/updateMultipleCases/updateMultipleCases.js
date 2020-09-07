@@ -4,15 +4,20 @@ import getCases from '@salesforce/apex/updateCaseController.getCases';
 const columns = [
     { label:'Case Number', fieldName: 'caseLink', type: 'url', sortable:true, typeAttributes: {label: {fieldName: 'CaseNumber'}, tooltip:'Go to detail page', target: '_blank'}},
     { label: 'Type', fieldName: 'Type', type: 'text', sortable:true },
-    { label: 'Status', fieldName: 'Status', type: 'text', sortable:true },
+    { label: 'Status', fieldName: 'Status', type: 'text', sortable:true, cellAttributes:{  
+        class:{  
+            fieldName: `statusModified`
+        },
+        alignment: `left`
+    } },
     { label: 'Origin', fieldName: 'Origin', type: 'text' , sortable:true},
-    { label: 'Priority', fieldName: 'Priority', type: 'text', sortable:true, cellAttributes: { alignment: 'left' } },
+    { label: 'Priority', fieldName: 'Priority', type: 'text', sortable:true, cellAttributes: { class:{  fieldName: `priorityModified` } , alignment: 'left' } },
     { label: 'Close Date', fieldName: 'ClosedDate', type: 'date', sortable:true,typeAttributes:{timeZone:'UTC', year:'numeric', month:'numeric', day:'numeric'}},
 ];
 export default class UpdateMultipleCases extends LightningElement {
     error;
     columns = columns;
-    allRecords; //All opportunities available for data table    
+    allRecords; //All Cases available for data table    
     showTable = false; //Used to render table after we get the data from apex controller    
     recordsToDisplay = []; //Records to be displayed on the page
     rowNumberOffset; //Row number
@@ -26,8 +31,8 @@ export default class UpdateMultipleCases extends LightningElement {
             for(let i=0; i<data.length; i++){
                 let record = {};
                 record.rowNumber = ''+(i+1);
-                record.caseLink = '/'+data[i].Id;
-                record = Object.assign(record, data[i]);
+                record.caseLink = '/'+data[i].Id;                
+                record = Object.assign(record, data[i]);                
                 records.push(record);
             }
             this.allRecords = records;
@@ -45,14 +50,7 @@ export default class UpdateMultipleCases extends LightningElement {
         }else{
             this.rowNumberOffset = 0;
         } 
-    }
-
-    onHandleSort(event) {
-        const { fieldName: sortedBy, sortDirection } = event.detail;
-        this.template.querySelector('c-lwc-datatable-utility').handelSort(event);        
-        this.sortDirection = sortDirection;
-        this.sortedBy = sortedBy;
-    }      
+    }    
 
     getSelectedRows(event) {
         const selectedRows = event.detail.selectedRows;
@@ -77,6 +75,24 @@ export default class UpdateMultipleCases extends LightningElement {
         this.selectedRows = items;  
         console.log(this.selectedRows);        
     } 
+
+    
+    changeStyle() {
+        //Generate Dynamic Values
+        let mdata = [];
+        this.allRecords.forEach(ele => {
+            if(ele['Priority']){
+                ele.priorityModified = ele.Priority === 'High' ? 'slds-text-color_error':'slds-text-color_success';            
+            }  
+            
+            if(ele['Status']){
+                ele.statusModified = ele.Status === 'Closed' ? `slds-is-edited`:``;            
+            }              
+            mdata.push(ele);
+        });       
+        this.allRecords = mdata;
+        this.template.querySelector('c-lwc-datatable-utility').setRecordsOnPage(); 
+    }      
 
 
 
