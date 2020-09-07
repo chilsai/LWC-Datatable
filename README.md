@@ -1,8 +1,3 @@
----
-description: >-
-  Datatable with Pagination, Row Selection across Pages and Table Search, Static
-  Headers using LWC.
----
 
 # Datatable using LWC
 
