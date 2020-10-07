@@ -1,4 +1,3 @@
-
 # Datatable using LWC
 
 ## Introduction
@@ -9,7 +8,7 @@ Lightning web components \(LWC\) are custom HTML elements built using HTML , mod
 
 OOB _lighting-datatable_ component displays tabular data where each column can be displayed based on the data type. It has lot of great features inbuilt, but if we have data with more than 100 rows that needs to render on page, we should either Implement **Pagination** or **Infinite scroll** for better user experience.
 
-In this article we will focus on creating _generic data table component_ with key features like \(_Pagination, Row selection, Static Headers and Global Search_ \).  Source code for this article is in [lwcDatatable](https://github.com/chilsai/lwcDatatable) repo. 
+In this article we will focus on creating _generic data table component_ with key features like \(_Pagination, Row selection, Static Headers and Global Search_ \). Source code for this article is in [lwcDatatable](https://github.com/chilsai/lwcDatatable) repo.
 
 ### Create Generic Component
 
@@ -17,19 +16,19 @@ First we will create _generic data table component_ and we call the Component as
 
 1. Create a lightning web components  with _Component_ Name as "_**lwcDatatableUtility**_".
 2. Replace code in **lwcDatatableUtility.js, lwcDatatableUtility.html, lwcDatatableUtility.css** from [lwcDatatableUtility](https://github.com/chilsai/lwcDatatable/tree/master/force-app/main/default/lwc/lwcDatatableUtility). 
-3. Deploy the _**lwcDatatableUtility** c_omponent to your Org. 
+3. Deploy the **lwcDatatableUtility** component to your Org. 
 4. Now we have generic Data table component ready to use and we can plug this to your own components.
 
 ### Plug-In Generic Component\(_**lwcDataTableUtility**_ \) to your Component
 
-To use generic _**lwcDataTableUtility**_ component in your own component. 
+To use generic _**lwcDataTableUtility**_ component in your own component.
 
 1. Declare below variables in **lwcDatatableUtility.js** which we will be using to send Data to [lwcDatatableUtility](https://github.com/chilsai/lwcDatatable/tree/master/force-app/main/default/lwc/lwcDatatableUtility) to render Table
    * allRecords
    * columns
 2. To Render Table we need to include **lwcDatatableUtility** in .html page as below.
 
-You can reference  [**updateMultipleCases**](https://github.com/chilsai/lwcDatatable/tree/master/force-app/main/default/lwc/updateMultipleCases) component on how to use _lwcDataTableUtility**.**_ 
+You can reference [**updateMultipleCases**](https://github.com/chilsai/lwcDatatable/tree/master/force-app/main/default/lwc/updateMultipleCases) component on how to use _lwcDataTableUtility**.**_
 
 ```markup
 <c-lwc-datatable-utility records={allRecords} 
@@ -42,8 +41,6 @@ onpaginatorchange={handlePaginatorChange}
 onsetselectedrecords={handleAllSelectedRows}>
 </c-lwc-datatable-utility>
 ```
-
-   
 
 ![Data Table in LWC ](.gitbook/assets/demo-v1.gif)
 
